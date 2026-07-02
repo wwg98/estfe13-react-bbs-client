@@ -25,7 +25,6 @@ export default function BoardList() {
     axios
       .get("http://localhost:3000/list", {})
       .then(response => {
-        console.log(response.data);
         setList(response.data);
       })
       .catch(error => {
@@ -49,8 +48,8 @@ export default function BoardList() {
           </tr>
         </thead>
         <tbody>
-          {list.map(item => (
-            <Board key={item.id} data={item} />
+          {list.map((item, idx) => (
+            <Board key={idx} data={item} />
           ))}
         </tbody>
       </Table>
