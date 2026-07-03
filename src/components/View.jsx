@@ -1,0 +1,75 @@
+import Button from "react-bootstrap/Button";
+import axios from "axios";
+import { data, Link, useParams } from "react-router";
+import { use, useEffect, useState } from "react";
+
+export default function View() {
+  const [content, setContent] = useState({
+    writer: "",
+    title: "",
+    content: "",
+    date: "",
+  });
+
+  const [isError, setIsError] = useState(false);
+  const { id } = useParams();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3000/view?id=${id}`, {})
+      .then(response => {
+        if (!response.data || response.data.length === 0) {
+          setIsError(true);
+          return;
+        }
+
+        const data = response.data[0];
+
+        setContent({
+          writer: data.writer,
+          title: data.title,
+          content: data.content,
+          date: data.date,
+        });
+      })
+
+      .catch(error => {
+        console.error(error);
+      })
+      .finally(() => {
+        console.log("요청 완료");
+      });
+  }, []);
+
+  if (isError) {
+    return (
+      <div>
+        <p>잘못된 접근 입니다.</p>
+        <p>다시 확인해 주세요.</p>
+        <Link to="/" className="btn btn-primary">
+          홈으로
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <h2>{content.title}</h2>
+      <div className="d-flex justify-content-between">
+        <p>글 쓴이 : {content.writer}</p>
+        <p>{content.date}</p>
+      </div>
+      <hr />
+      {content.content}
+      <hr />
+      <div className="d-flex gap-1 justify-content-end">
+        <Link to="/" className="btn btn-primary">
+          홈
+        </Link>
+        <Button variant="secondary">수정</Button>
+        <Button variant="danger">삭제 </Button>
+      </div>
+    </>
+  );
+}

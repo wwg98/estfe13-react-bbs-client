@@ -1,5 +1,6 @@
 import BoardList from "./components/BoardList";
 import Write from "./components/Write";
+import View from "./components/View";
 import { Routes, Route } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -11,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<BoardList />} />
         <Route path="/write" element={<Write />} />
-        {/* <Route path="/view/:id" element={<View />} /> */}
+        <Route path="/view/:id" element={<View />} />
       </Routes>
     </div>
   );
