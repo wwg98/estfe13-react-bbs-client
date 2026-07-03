@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import { Link, useParams } from "react-router";
+import { Link, useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function View({ handleModify }) {
@@ -13,6 +13,7 @@ export default function View({ handleModify }) {
 
   const [isError, setIsError] = useState(false);
   const { id } = useParams();
+  let navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -56,6 +57,19 @@ export default function View({ handleModify }) {
     handleModify(id);
   };
 
+  const handleDelet = () => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+    axios
+      .post("http://localhost:3000/delete", { id: id })
+      .then(() => {
+        navigate("/");
+      })
+      .catch(error => {
+        console.error(error);
+      })
+      .finally(() => {});
+  };
+
   return (
     <>
       <h2>{content.title}</h2>
@@ -73,7 +87,9 @@ export default function View({ handleModify }) {
         <Button variant="secondary" onClick={handleClick}>
           수정
         </Button>
-        <Button variant="danger">삭제 </Button>
+        <Button variant="danger" onClick={handleDelet}>
+          삭제
+        </Button>
       </div>
     </>
   );
