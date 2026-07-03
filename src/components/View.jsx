@@ -1,9 +1,9 @@
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import { data, Link, useParams } from "react-router";
-import { use, useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
+import { useEffect, useState } from "react";
 
-export default function View() {
+export default function View({ handleModify }) {
   const [content, setContent] = useState({
     writer: "",
     title: "",
@@ -35,10 +35,9 @@ export default function View() {
 
       .catch(error => {
         console.error(error);
+        setIsError(true);
       })
-      .finally(() => {
-        console.log("요청 완료");
-      });
+      .finally(() => {});
   }, []);
 
   if (isError) {
@@ -52,6 +51,10 @@ export default function View() {
       </div>
     );
   }
+
+  const handleClick = () => {
+    handleModify(id);
+  };
 
   return (
     <>
@@ -67,7 +70,9 @@ export default function View() {
         <Link to="/" className="btn btn-primary">
           홈
         </Link>
-        <Button variant="secondary">수정</Button>
+        <Button variant="secondary" onClick={handleClick}>
+          수정
+        </Button>
         <Button variant="danger">삭제 </Button>
       </div>
     </>
