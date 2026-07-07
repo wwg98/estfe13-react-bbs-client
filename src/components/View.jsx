@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link, useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function View({ handleModify }) {
   const [content, setContent] = useState({
     writer: "",
@@ -18,7 +20,7 @@ export default function View({ handleModify }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/view?id=${id}`, {})
+      .get(`${API_URL}/view?id=${id}`, {})
       .then(response => {
         if (!response.data || response.data.length === 0) {
           setIsError(true);
@@ -62,7 +64,7 @@ export default function View({ handleModify }) {
   const handleDelet = () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     axios
-      .post("http://localhost:3000/delete", { id: id })
+      .post(`${API_URL}/delete`, { id: id })
       .then(() => {
         navigate("/");
       })
@@ -84,7 +86,7 @@ export default function View({ handleModify }) {
       {content.image && (
         <div>
           <img
-            src={`http://localhost:3000/${content.image}`}
+            src={`${API_URL}/${content.image}`}
             alt={content.title}
             style={{ maxWidth: "80%" }}
           />

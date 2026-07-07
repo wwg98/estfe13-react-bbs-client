@@ -4,6 +4,8 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Write({ isModifyMode, boardId, handleCancel }) {
   let navigate = useNavigate();
 
@@ -19,7 +21,7 @@ export default function Write({ isModifyMode, boardId, handleCancel }) {
   useEffect(() => {
     if (isModifyMode && boardId) {
       axios
-        .get(`http://localhost:3000/view?id=${boardId}`, {})
+        .get(`${API_URL}/view?id=${boardId}`, {})
         .then(response => {
           if (!response.data || response.data.length === 0) {
             setIsError(true);
@@ -94,7 +96,7 @@ export default function Write({ isModifyMode, boardId, handleCancel }) {
     const formData = createFormData(validatedData);
 
     axios
-      .post("http://localhost:3000/write", formData, {
+      .post(`${API_URL}/write`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
@@ -114,7 +116,7 @@ export default function Write({ isModifyMode, boardId, handleCancel }) {
     const formData = createFormData(validatedData, boardId);
 
     axios
-      .post("http://localhost:3000/update", formData, {
+      .post(`${API_URL}/update`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
@@ -181,7 +183,7 @@ export default function Write({ isModifyMode, boardId, handleCancel }) {
         {content.image_path && (
           <div>
             <img
-              src={`http://localhost:3000/${content.image_path}`}
+              src={`${API_URL}/${content.image_path}`}
               alt={content.title}
               style={{ maxWidth: "200px" }}
             />
